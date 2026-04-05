@@ -1,36 +1,30 @@
-#include "rtos_api.h"
-#include "sys.h"
+#include <stdio.h>
+#include "os.h"
+#include "os_types.h"
 
-void _Start(_pfn task, char priority)
-{
-    int i;
-
-    /* Инициализация очередей */
-    gTaskQueueHead = _NULL;
-    gRunningTask = _NULL;
-
-    /* Список свободных TCB */
-    gFreeTask = 0;
-    for (i = 0; i < TASK_MAX - 1; i++)
-        gTaskQueue[i].link = i + 1;
-    gTaskQueue[TASK_MAX - 1].link = _NULL;
-
-    /* Инициализация ресурсов */
-    for (i = 0; i < RESOURCE_MAX; i++) {
-        gResources[i].owner = _NULL;
-        gResources[i].locked = 0;
-        gResources[i].ceiling_priority = 0;
-    }
-
-    /* Сохраняем стек для ShutdownOS */
-    gReturnSP = GetSP();
-
-    /* Активируем первую задачу */
-    _Activate(task, priority);
+void EnterISR(void) {
+    printf("[ISR] EnterISR() called\n");
+    // TODO: Сохранить контекст прерывания
+    // TODO: Переключиться на системный стек
 }
 
-void ShutdownOS(void)
-{
-    SetSP(gReturnSP);
-    return;
+void LeaveISR(void) {
+    printf("[ISR] LeaveISR() called\n");
+    // TODO: Восстановить контекст прерывания
+    // TODO: Если нужно переключение задач - вызвать планировщик
+}
+
+void StartOS(TTask task) {
+    printf("[OS] StartOS(task=%d) called\n", task);
+    // TODO: Инициализация всех системных структур
+    // TODO: Установить начальную задачу
+    // TODO: Запустить планировщик
+    // TODO: Возврат только после ShutdownOS
+}
+
+void ShutdownOS(void) {
+    printf("[OS] ShutdownOS() called\n");
+    // TODO: Немедленное завершение работы системы
+    // TODO: Остановить все задачи
+    // TODO: Освободить ресурсы
 }

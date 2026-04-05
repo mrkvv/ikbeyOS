@@ -1,39 +1,56 @@
-#include "rtos_api.h"
-#include "sys.h"
+#include <stdio.h>
+#include "os.h"
+#include "os_types.h"
 
-void _GetResource(TResource rid)
-{
-    if (gResources[rid].locked) {
-        /* PIP: поднять приоритет владельца до ceiling */
-        char owner = gResources[rid].owner;
-        char ceiling = gResources[rid].ceiling_priority;
+// TODO: Здесь будут глобальные переменные:
+// - массив ресурсов (максимум 16)
+// - для каждого ресурса: locked flag, owner task, ceiling priority
+// - оригинальные приоритеты задач для PIP
 
-        if (ceiling > gTaskQueue[owner].current_priority) {
-            gTaskQueue[owner].current_priority = ceiling;
-            /* Перепланирование */
-            _Schedule(ceiling);
-        }
-
-        /* Заблокировать текущую задачу на ресурсе */
-        /* ... */
-    }
-    else {
-        /* Захватить ресурс */
-        gResources[rid].locked = 1;
-        gResources[rid].owner = gRunningTask;
-    }
+void InitRes(TResource ResNum) {
+    printf("[RES] InitRes(%d) called - PIP mode\n", ResNum);
+    // TODO: Инициализировать ресурс для PIP
+    // TODO: Установить locked = 0
+    // TODO: Установить owner = -1
 }
 
-void _ReleaseResource(TResource rid)
-{
-    /* Восстановить исходный приоритет владельца */
-    char owner = gResources[rid].owner;
-    gTaskQueue[owner].current_priority = gTaskQueue[owner].priority;
+void PIP_GetRes(TResource ResNum) {
+    printf("[PIP] PIP_GetRes(%d) called\n", ResNum);
+    // TODO: Если ресурс свободен - захватить
+    // TODO: Если ресурс занят другой задачей - применить PIP
+    // TODO: Повысить приоритет владельца ресурса до ceiling priority
+    // TODO: Заблокировать текущую задачу до освобождения ресурса
+}
 
-    /* Освободить ресурс */
-    gResources[rid].locked = 0;
-    gResources[rid].owner = _NULL;
+void PIP_ReleaseRes(TResource ResNum) {
+    printf("[PIP] PIP_ReleaseRes(%d) called\n", ResNum);
+    // TODO: Освободить ресурс
+    // TODO: Восстановить оригинальный приоритет владельца
+    // TODO: Если есть ожидающие задачи - разблокировать
+    // TODO: Вызвать планировщик
+}
 
-    /* Перепланирование */
-    _Schedule(gTaskQueue[owner].priority);
+void GetResource(TResource res) {
+    printf("[RES] GetResource(%d) called\n", res);
+    // TODO: Захват ресурса (для совместимости с HLP)
+}
+
+void ReleaseResource(TResource res) {
+    printf("[RES] ReleaseResource(%d) called\n", res);
+    // TODO: Освобождение ресурса (для совместимости с HLP)
+}
+
+void InitPVS(TSemaphore S) {
+    printf("[SEM] InitPVS(%d) called\n", S);
+    // TODO: Инициализация семафора
+}
+
+void P(TSemaphore S) {
+    printf("[SEM] P(%d) called\n", S);
+    // TODO: Захват семафора
+}
+
+void V(TSemaphore S) {
+    printf("[SEM] V(%d) called\n", S);
+    // TODO: Освобождение семафора
 }

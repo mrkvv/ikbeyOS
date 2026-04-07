@@ -288,7 +288,7 @@ int RegisterTask(TTask task_id, void (*entry)(void*), void* param, int priority)
     gTaskQueue[task_id].param = param;
     gTaskQueue[task_id].priority = priority;
     gTaskQueue[task_id].current_priority = priority;
-    gTaskQueue[task_id].original_priority = priority;
+    gTaskQueue[task_id].original_priority = 0;
     gTaskQueue[task_id].id = task_id;
     gTaskQueue[task_id].terminated = 0;
 

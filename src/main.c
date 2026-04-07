@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "os.h"
 #include "os_types.h"
+#include "task.h"
 
 // Объявление задач
 DeclareTask(Task1);
@@ -59,6 +60,14 @@ int main() {
     printf("  - Events: Task-owned\n");
     printf("  - Max tasks: 32, resources: 16, events: 16\n");
     printf("========================================\n\n");
+
+    // для планировщика: Инициализация системы задач
+    InitTaskSystem();
+
+    // для планировщика: Регистрация задач с приоритетами
+    RegisterTask(0, Task1, NULL, 1);  // Task1 - высокий приоритет
+    RegisterTask(1, Task2, NULL, 2);  // Task2 - средний приоритет
+    RegisterTask(2, Task3, NULL, 3);  // Task3 - низкий приоритет
 
     // Инициализация ресурсов
     InitRes(0);

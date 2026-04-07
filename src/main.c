@@ -25,6 +25,7 @@ TASK(Task1, param) {
     PIP_ReleaseRes(0);
 
     printf("========== TASK 1 FINISHED ==========\n");
+    ActivateTask(1); // вызываем Task2
     TerminateTask();
 }
 
@@ -36,6 +37,7 @@ TASK(Task2, param) {
     ReleaseResource(0);
 
     printf("========== TASK 2 FINISHED ==========\n");
+    ActivateTask(2); // вызываем Task3
     TerminateTask();
 }
 
@@ -72,11 +74,6 @@ int main() {
     // Инициализация ресурсов
     InitRes(0);
     InitRes(1);
-
-    // Активация задач
-    ActivateTask(0);
-    ActivateTask(1);
-    ActivateTask(2);
 
     // Запуск ОС
     StartOS(0);
